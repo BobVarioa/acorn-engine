@@ -972,7 +972,7 @@ pp.parseFunctionBody = function(node, isArrowFunction, isMethod, forInit) {
     this.adaptDirectivePrologue(node.body.body)
     this.labels = oldLabels
   }
-  this.exitScope()
+  this.exitScope(node)
 }
 
 pp.isSimpleParamList = function(params) {

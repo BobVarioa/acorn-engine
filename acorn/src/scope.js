@@ -1,5 +1,5 @@
 import {Parser} from "./state.js"
-import {SCOPE_VAR, SCOPE_FUNCTION, SCOPE_TOP, SCOPE_ARROW, SCOPE_SIMPLE_CATCH, BIND_LEXICAL, BIND_SIMPLE_CATCH, BIND_FUNCTION} from "./scopeflags.js"
+import {SCOPE_VAR, SCOPE_FUNCTION, SCOPE_TOP, SCOPE_ARROW, SCOPE_SIMPLE_CATCH, BIND_LEXICAL, BIND_SIMPLE_CATCH, BIND_FUNCTION, SCOPE_CLASS_STATIC_BLOCK} from "./scopeflags.js"
 
 const pp = Parser.prototype
 
@@ -23,8 +23,24 @@ pp.enterScope = function(flags) {
   this.scopeStack.push(new Scope(flags))
 }
 
-pp.exitScope = function() {
-  this.scopeStack.pop()
+pp.exitScope = function(node) {
+  let scope = this.scopeStack.pop()
+  if (this.includeExtraScopeInfo) {
+    node.scope = {
+      flags: {
+        topLevel: !!(scope.flags & SCOPE_TOP),
+        function: !!(scope.flags & SCOPE_FUNCTION),
+        arrow: !!(scope.flags & SCOPE_ARROW),
+        simpleCatch: !!(scope.flags & SCOPE_SIMPLE_CATCH),
+        classStaticBlock: !!(scope.flags & SCOPE_CLASS_STATIC_BLOCK)
+      },
+      declaredNames: {
+        var: scope.var,
+        lexical: scope.lexical,
+        functions: scope.functions
+      }
+    }
+  }
 }
 
 // The spec says:

@@ -89,12 +89,17 @@ export class Parser {
     // Each element has two properties: 'declared' and 'used'.
     // When it exited from the outermost class definition, all used private names must be declared.
     this.privateNameStack = []
+
+    // Whether to include extra scope information in the ast.
+    this.includeExtraScopeInfo = options.includeExtraScopeInfo === true
   }
 
   parse() {
     let node = this.options.program || this.startNode()
     this.nextToken()
-    return this.parseTopLevel(node)
+    let _node = this.parseTopLevel(node)
+    this.exitScope(_node)
+    return _node
   }
 
   get inFunction() { return (this.currentVarScope().flags & SCOPE_FUNCTION) > 0 }

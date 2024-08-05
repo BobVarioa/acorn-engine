@@ -99,7 +99,9 @@ export const defaultOptions = {
   directSourceFile: null,
   // When enabled, parenthesized expressions are represented by
   // (non-standard) ParenthesizedExpression nodes
-  preserveParens: false
+  preserveParens: false,
+  // Whether to include extra scope information in the ast.
+  includeExtraScopeInfo: false
 }
 
 // Interpret and default an options object

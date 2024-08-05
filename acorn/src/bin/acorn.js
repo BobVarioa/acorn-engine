@@ -27,6 +27,7 @@ for (let i = 2; i < process.argv.length; ++i) {
   else if (arg === "--help") help(0)
   else if (arg === "--tokenize") tokenize = true
   else if (arg === "--module") options.sourceType = "module"
+  else if (arg === "--include-extra-scope-info") options.includeExtraScopeInfo = true
   else {
     let match = arg.match(/^--ecma(\d+)$/)
     if (match)

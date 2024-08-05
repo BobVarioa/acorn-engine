@@ -321,7 +321,7 @@ pp.parseSwitchStatement = function(node) {
       cur.consequent.push(this.parseStatement(null))
     }
   }
-  this.exitScope()
+  this.exitScope(node)
   if (cur) this.finishNode(cur, "SwitchCase")
   this.next() // Closing brace
   this.labels.pop()
@@ -366,7 +366,7 @@ pp.parseTryStatement = function(node) {
       this.enterScope(0)
     }
     clause.body = this.parseBlock(false)
-    this.exitScope()
+    this.exitScope(node)
     node.handler = this.finishNode(clause, "CatchClause")
   }
   node.finalizer = this.eat(tt._finally) ? this.parseBlock() : null
@@ -444,7 +444,7 @@ pp.parseBlock = function(createNewLexicalScope = true, node = this.startNode(), 
   }
   if (exitStrict) this.strict = false
   this.next()
-  if (createNewLexicalScope) this.exitScope()
+  if (createNewLexicalScope) this.exitScope(node)
   return this.finishNode(node, "BlockStatement")
 }
 
@@ -460,7 +460,7 @@ pp.parseFor = function(node, init) {
   node.update = this.type === tt.parenR ? null : this.parseExpression()
   this.expect(tt.parenR)
   node.body = this.parseStatement("for")
-  this.exitScope()
+  this.exitScope(node)
   this.labels.pop()
   return this.finishNode(node, "ForStatement")
 }
@@ -494,7 +494,7 @@ pp.parseForIn = function(node, init) {
   node.right = isForIn ? this.parseExpression() : this.parseMaybeAssign()
   this.expect(tt.parenR)
   node.body = this.parseStatement("for")
-  this.exitScope()
+  this.exitScope(node)
   this.labels.pop()
   return this.finishNode(node, isForIn ? "ForInStatement" : "ForOfStatement")
 }
@@ -766,7 +766,7 @@ pp.parseClassStaticBlock = function(node) {
     node.body.push(stmt)
   }
   this.next()
-  this.exitScope()
+  this.exitScope(node)
   this.labels = oldLabels
 
   return this.finishNode(node, "StaticBlock")
