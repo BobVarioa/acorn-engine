@@ -1,3 +1,9 @@
+# Acorn-Engine
+
+This is a fork of [acorn](https://github.com/acornjs/acorn) that is intended for use in JavaScript engines.
+The original README is provided below.
+
+---
 # Acorn
 
 [![Build Status](https://github.com/acornjs/acorn/workflows/ci/badge.svg)](https://github.com/acornjs/acorn/actions)
